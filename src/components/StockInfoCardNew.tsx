@@ -53,14 +53,44 @@ export default function StockInfoCardNew({ info, isPlaceholder = false }: StockI
         >
           <div className="flex">
             <div className="flex-1 flex items-center justify-center border-r border-cyan-400/30 py-8 px-4">
-              <div className="text-center">
-                <div className={`text-4xl font-bold mb-2 ${
-                  isPlaceholder ? 'text-gray-500' : 'text-white'
-                }`}>{info.code}</div>
-                <div className="flex items-center justify-center mt-4">
-                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none">
-                    <path d="M12 0L12 24M12 24L6 18M12 24L18 18" stroke="#ff4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+              <div className="space-y-3 w-full">
+                <div className="text-center">
+                  <div className={`text-lg font-bold ${
+                    isPlaceholder ? 'text-gray-500' : 'text-white'
+                  }`}>
+                    {info.name.length > 4 ? info.name.substring(0, 4) : info.name}
+                    <span className="ml-1 text-sm font-medium text-cyan-300">({info.code})</span>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <div className={`text-3xl font-bold flex items-center justify-center gap-2 ${
+                    isPlaceholder ? 'text-gray-500' : 'text-white'
+                  }`}>
+                    ¥{info.price}
+                    <svg width="16" height="20" viewBox="0 0 16 20" fill="none" className="flex-shrink-0">
+                      <path
+                        d={info.change.startsWith('-') ? "M8 20L8 4M8 4L4 8M8 4L12 8" : "M8 0L8 16M8 16L4 12M8 16L12 12"}
+                        stroke={info.change.startsWith('-') ? "#22c55e" : "#ef4444"}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="text-center space-y-0.5">
+                  <div className={`text-sm font-semibold ${
+                    info.change.startsWith('-') ? 'text-green-400' : 'text-red-400'
+                  }`}>
+                    {info.change}
+                  </div>
+                  <div className={`text-xs font-medium ${
+                    info.change.startsWith('-') ? 'text-green-400/80' : 'text-red-400/80'
+                  }`}>
+                    前日比 {info.changePercent}%
+                  </div>
                 </div>
               </div>
             </div>
