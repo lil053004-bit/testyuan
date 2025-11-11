@@ -74,7 +74,7 @@ export default function NewHomeRedesigned() {
   };
 
   const runDiagnosis = async () => {
-    if (diagnosisState !== 'initial' || !stockData || isPlaceholderData(stockData)) return;
+    if (diagnosisState !== 'initial' || !stockData) return;
 
     trackEvent('Bdd');
 
@@ -260,16 +260,9 @@ export default function NewHomeRedesigned() {
       </div>
 
       <div className="relative min-h-screen flex flex-col">
-        <div className="relative z-10 px-4 py-8 flex-1">
-          <div className="text-center mb-8 pt-8">
-            <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
-              AI高精度
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-              銘柄無料診断
-            </h1>
-
-            <div className="w-full max-w-[500px] mx-auto mb-6">
+        <div className="relative px-4 py-8 flex-1">
+          <div className="relative text-center mb-8 pt-8">
+            <div className="absolute inset-0 w-full max-w-[500px] mx-auto left-0 right-0 -top-8 pointer-events-none">
               <div className="relative w-full aspect-square">
                 <svg className="w-full h-full" viewBox="0 0 400 400">
                   <defs>
@@ -307,23 +300,16 @@ export default function NewHomeRedesigned() {
                 </svg>
               </div>
             </div>
-          </div>
 
-          {error && diagnosisState !== 'error' && stockData && isPlaceholderData(stockData) && (
-            <div className="bg-red-900/20 border border-red-600/30 rounded-xl p-4 backdrop-blur-sm mb-6 max-w-md mx-auto">
-              <p className="text-red-300 text-center font-semibold mb-3">{error}</p>
-              <button
-                onClick={() => {
-                  if (stockCode) {
-                    fetchStockData(stockCode);
-                  }
-                }}
-                className="w-full px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition-all"
-              >
-                再試行
-              </button>
+            <div className="relative z-10 pt-24">
+              <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
+                AI高精度
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+                銘柄無料診断
+              </h1>
             </div>
-          )}
+          </div>
 
           {loading && (
             <div className="text-center py-20">
@@ -336,21 +322,17 @@ export default function NewHomeRedesigned() {
             <div className="space-y-6 max-w-6xl mx-auto">
               <StockInfoCardNew info={stockData.info} isPlaceholder={isPlaceholderData(stockData)} />
 
-              {!isPlaceholderData(stockData) && (
-                <div className="max-w-md mx-auto">
-                  <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
-                </div>
-              )}
+              <div className="max-w-md mx-auto">
+                <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
+              </div>
 
               <StockPerformanceList />
 
               <HexagonRadarChart />
 
-              {!isPlaceholderData(stockData) && (
-                <div className="max-w-md mx-auto mt-8">
-                  <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
-                </div>
-              )}
+              <div className="max-w-md mx-auto mt-8">
+                <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
+              </div>
             </div>
           )}
 
