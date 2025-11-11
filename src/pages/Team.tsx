@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 export default function Team() {
   const teamMembers = [
     {
-      name: '山田 太郎',
-      role: 'CEO / 創業者',
+      name: '田口哲夫',
+      role: '代表 / 創業者',
       icon: Award,
       color: 'blue',
-      description: '金融業界で15年の経験を持つベテラン。投資情報の民主化を目指してサービスを創業。',
-      expertise: ['経営戦略', '金融市場分析', '事業開発']
+      description: '投資情報の民主化を目指してサービスを創業。AI技術を活用した株式分析サービスの開発を推進。',
+      expertise: ['サービス企画', '事業開発', '市場分析']
     },
     {
       name: '佐藤 花子',

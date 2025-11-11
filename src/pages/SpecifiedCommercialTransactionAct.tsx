@@ -35,23 +35,30 @@ export default function SpecifiedCommercialTransactionAct() {
                   <h2 className="text-xl font-bold text-gray-900 mb-4">販売業者情報</h2>
                   <dl className="space-y-3">
                     <div className="grid sm:grid-cols-3 gap-2">
-                      <dt className="font-semibold text-gray-900">販売業者名</dt>
-                      <dd className="sm:col-span-2 text-gray-700">AI株式診断サービス運営事業者</dd>
+                      <dt className="font-semibold text-gray-900">組織名</dt>
+                      <dd className="sm:col-span-2 text-gray-700">合同会社リコッテ</dd>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-2">
-                      <dt className="font-semibold text-gray-900">運営責任者</dt>
-                      <dd className="sm:col-span-2 text-gray-700">山田 太郎</dd>
+                      <dt className="font-semibold text-gray-900">組織名（英語）</dt>
+                      <dd className="sm:col-span-2 text-gray-700">Ricotte LLC</dd>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-2">
-                      <dt className="font-semibold text-gray-900">所在地</dt>
+                      <dt className="font-semibold text-gray-900">担当者名</dt>
+                      <dd className="sm:col-span-2 text-gray-700">田口哲夫</dd>
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-2">
+                      <dt className="font-semibold text-gray-900">郵便番号</dt>
+                      <dd className="sm:col-span-2 text-gray-700">536-8501</dd>
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-2">
+                      <dt className="font-semibold text-gray-900">都道府県</dt>
+                      <dd className="sm:col-span-2 text-gray-700">大阪府</dd>
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-2">
+                      <dt className="font-semibold text-gray-900">住所</dt>
                       <dd className="sm:col-span-2 text-gray-700">
-                        〒XXX-XXXX<br />
-                        東京都XX区XX町X-X-X XXビルX階
+                        大阪市城东区野江一丁目13番4号
                       </dd>
-                    </div>
-                    <div className="grid sm:grid-cols-3 gap-2">
-                      <dt className="font-semibold text-gray-900">設立</dt>
-                      <dd className="sm:col-span-2 text-gray-700">2025年</dd>
                     </div>
                   </dl>
                 </div>
@@ -68,11 +75,11 @@ export default function SpecifiedCommercialTransactionAct() {
                   <dl className="space-y-3">
                     <div className="grid sm:grid-cols-3 gap-2">
                       <dt className="font-semibold text-gray-900">電話番号</dt>
-                      <dd className="sm:col-span-2 text-gray-700">03-XXXX-XXXX</dd>
+                      <dd className="sm:col-span-2 text-gray-700">080-3824-1560</dd>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-2">
                       <dt className="font-semibold text-gray-900">メールアドレス</dt>
-                      <dd className="sm:col-span-2 text-blue-600">info@ai-stock-diagnosis.example.com</dd>
+                      <dd className="sm:col-span-2 text-blue-600">qddqdd3316@gmail.com</dd>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-2">
                       <dt className="font-semibold text-gray-900">受付時間</dt>
@@ -241,14 +248,14 @@ export default function SpecifiedCommercialTransactionAct() {
                   <Mail className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">メール</p>
-                    <p className="text-blue-600">info@ai-stock-diagnosis.example.com</p>
+                    <p className="text-blue-600">qddqdd3316@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 mb-4">
                   <Phone className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">電話</p>
-                    <p className="text-gray-700">03-XXXX-XXXX（平日 9:00 - 18:00）</p>
+                    <p className="text-gray-700">080-3824-1560（平日 9:00 - 18:00）</p>
                   </div>
                 </div>
                 <Link
