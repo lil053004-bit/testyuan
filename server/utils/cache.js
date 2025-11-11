@@ -3,7 +3,7 @@ import { generateUUID } from '../database/helpers.js';
 
 const CACHE_DURATION_HOURS = 4;
 
-export async function getCachedDiagnosis(stockCode) {
+export function getCachedDiagnosis(stockCode) {
   try {
     const now = new Date().toISOString();
     const stmt = db.prepare(`
@@ -38,7 +38,7 @@ export async function getCachedDiagnosis(stockCode) {
   }
 }
 
-export async function saveDiagnosisToCache(stockCode, stockData, diagnosisResult, modelUsed = 'qwen2.5-7b-instruct') {
+export function saveDiagnosisToCache(stockCode, stockData, diagnosisResult, modelUsed = 'qwen2.5-7b-instruct') {
   try {
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + CACHE_DURATION_HOURS);
@@ -66,7 +66,7 @@ export async function saveDiagnosisToCache(stockCode, stockData, diagnosisResult
   }
 }
 
-export async function cleanExpiredCache() {
+export function cleanExpiredCache() {
   try {
     const now = new Date().toISOString();
     const stmt = db.prepare('DELETE FROM diagnosis_cache WHERE expires_at < ?');
@@ -79,7 +79,7 @@ export async function cleanExpiredCache() {
   }
 }
 
-export async function getCacheStats() {
+export function getCacheStats() {
   try {
     const now = new Date().toISOString();
     const stmt = db.prepare(`

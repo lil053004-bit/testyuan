@@ -19,9 +19,9 @@ dotenv.config();
 initializeDatabase();
 await createInitialAdminUser();
 
-setInterval(async () => {
+setInterval(() => {
   console.log('Running scheduled cache cleanup...');
-  await cleanExpiredCache();
+  cleanExpiredCache();
 }, 60 * 60 * 1000);
 
 startHotStocksScheduler();
