@@ -53,13 +53,13 @@ function parseRelatedStocks(html) {
   const relatedStocks = [];
 
   try {
-    const sectionMatch = html.match(/<div class="si_i1_dl2_div">[\s\S]*?<\/div>[\s\S]*?<\/div>/);
+    const sectionMatch = html.match(/<dt>比較される銘柄<\/dt>([\s\S]*?)<\/dl>/);
     if (!sectionMatch) return relatedStocks;
 
-    const stockRegex = /<a href="\/stock\/kabuka\?code=(\d+)">([^<]+)<\/a>/g;
+    const stockRegex = /<a href="\/stock\/\?code=(\d+)">([^<]+)<\/a>/g;
 
     let match;
-    while ((match = stockRegex.exec(sectionMatch[0])) !== null) {
+    while ((match = stockRegex.exec(sectionMatch[1])) !== null) {
       relatedStocks.push({
         code: match[1],
         name: match[2],
