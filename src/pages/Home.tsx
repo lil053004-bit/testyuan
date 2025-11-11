@@ -15,6 +15,7 @@ import { apiClient } from '../lib/apiClient';
 import { userTracking } from '../lib/userTracking';
 import { trackConversion } from '../lib/googleTracking';
 import { generateDiagnosisReport } from '../lib/reportGenerator';
+import { createPlaceholderStockData, isPlaceholderData } from '../lib/placeholderData';
 
 export default function Home() {
   const urlParams = useUrlParams();
@@ -69,7 +70,9 @@ export default function Home() {
       setStockData(data);
       setStockCode(code);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '不明なエラーが発生しました');
+      const errorMessage = err instanceof Error ? err.message : '不明なエラーが発生しました';
+      setError(errorMessage);
+      setStockData(createPlaceholderStockData(code));
     } finally {
       setLoading(false);
     }
@@ -77,7 +80,7 @@ export default function Home() {
 
 
   const runDiagnosis = async () => {
-    if (diagnosisState !== 'initial' || !stockData) return;
+    if (diagnosisState !== 'initial' || !stockData || isPlaceholderData(stockData)) return;
 
     setDiagnosisState('connecting');
     setDiagnosisStartTime(Date.now());

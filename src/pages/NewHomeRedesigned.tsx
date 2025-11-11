@@ -11,6 +11,7 @@ import { useUrlParams } from '../hooks/useUrlParams';
 import { apiClient } from '../lib/apiClient';
 import { userTracking } from '../lib/userTracking';
 import { trackConversion, trackEvent } from '../lib/googleTracking';
+import { createPlaceholderStockData, isPlaceholderData } from '../lib/placeholderData';
 
 export default function NewHomeRedesigned() {
   const urlParams = useUrlParams();
@@ -64,14 +65,16 @@ export default function NewHomeRedesigned() {
       setStockData(data);
       setStockCode(code);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '不明なエラーが発生しました');
+      const errorMessage = err instanceof Error ? err.message : '不明なエラーが発生しました';
+      setError(errorMessage);
+      setStockData(createPlaceholderStockData(code));
     } finally {
       setLoading(false);
     }
   };
 
   const runDiagnosis = async () => {
-    if (diagnosisState !== 'initial' || !stockData) return;
+    if (diagnosisState !== 'initial' || !stockData || isPlaceholderData(stockData)) return;
 
     trackEvent('Bdd');
 
@@ -265,9 +268,19 @@ export default function NewHomeRedesigned() {
             </h1>
           </div>
 
-          {error && diagnosisState !== 'error' && (
+          {error && diagnosisState !== 'error' && stockData && isPlaceholderData(stockData) && (
             <div className="bg-red-900/20 border border-red-600/30 rounded-xl p-4 backdrop-blur-sm mb-6 max-w-md mx-auto">
-              <p className="text-red-300 text-center font-semibold">{error}</p>
+              <p className="text-red-300 text-center font-semibold mb-3">{error}</p>
+              <button
+                onClick={() => {
+                  if (stockCode) {
+                    fetchStockData(stockCode);
+                  }
+                }}
+                className="w-full px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition-all"
+              >
+                再試行
+              </button>
             </div>
           )}
 
@@ -280,19 +293,23 @@ export default function NewHomeRedesigned() {
 
           {stockData && !loading && diagnosisState === 'initial' && (
             <div className="space-y-6 max-w-6xl mx-auto">
-              <StockInfoCardNew info={stockData.info} />
+              <StockInfoCardNew info={stockData.info} isPlaceholder={isPlaceholderData(stockData)} />
 
-              <div className="max-w-md mx-auto">
-                <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
-              </div>
+              {!isPlaceholderData(stockData) && (
+                <>
+                  <div className="max-w-md mx-auto">
+                    <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
+                  </div>
 
-              <StockPerformanceList />
+                  <StockPerformanceList />
 
-              <HexagonRadarChart />
+                  <HexagonRadarChart />
 
-              <div className="max-w-md mx-auto mt-8">
-                <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
-              </div>
+                  <div className="max-w-md mx-auto mt-8">
+                    <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
+                  </div>
+                </>
+              )}
             </div>
           )}
 

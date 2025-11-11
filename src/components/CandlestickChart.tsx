@@ -22,6 +22,8 @@ export default function CandlestickChart({ prices }: CandlestickChartProps) {
   const [showVolume, setShowVolume] = useState(false);
   const [dataRange, setDataRange] = useState<'7d' | '30d' | 'all'>('30d');
 
+  const hasData = prices && prices.length > 0;
+
   const chartData = useMemo(() => {
     const rangeMap = {
       '7d': 7,
@@ -161,6 +163,12 @@ export default function CandlestickChart({ prices }: CandlestickChartProps) {
   return (
     <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl">
       <div className="p-4">
+        {!hasData && (
+          <div className="text-center py-20">
+            <p className="text-gray-400 text-lg">データがありません</p>
+          </div>
+        )}
+        {hasData && (
         <div className="flex items-center justify-end gap-2 mb-4">
           <button
             onClick={() => setDataRange('7d')}
@@ -277,6 +285,7 @@ export default function CandlestickChart({ prices }: CandlestickChartProps) {
             {showVolume ? '出来高を非表示' : '出来高を表示'}
           </button>
         </div>
+        )}
       </div>
     </div>
   );
