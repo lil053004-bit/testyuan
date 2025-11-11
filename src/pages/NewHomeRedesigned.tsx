@@ -262,6 +262,13 @@ export default function NewHomeRedesigned() {
       <div className="relative min-h-screen flex flex-col">
         <div className="relative z-10 px-4 py-8 flex-1">
           <div className="text-center mb-8 pt-8">
+            <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
+              AI高精度
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              銘柄無料診断
+            </h1>
+
             <div className="w-full max-w-[500px] mx-auto mb-6">
               <div className="relative w-full aspect-square">
                 <svg className="w-full h-full" viewBox="0 0 400 400">
@@ -300,12 +307,6 @@ export default function NewHomeRedesigned() {
                 </svg>
               </div>
             </div>
-            <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
-              AI高精度
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
-              銘柄無料診断
-            </h1>
           </div>
 
           {error && diagnosisState !== 'error' && stockData && isPlaceholderData(stockData) && (
