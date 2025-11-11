@@ -6,6 +6,7 @@ import YellowDiagnosisButton from '../components/YellowDiagnosisButton';
 import StockPerformanceList from '../components/StockPerformanceList';
 import HexagonRadarChart from '../components/HexagonRadarChart';
 import NewDiagnosisModal from '../components/NewDiagnosisModal';
+import Footer from '../components/Footer';
 import { StockData } from '../types/stock';
 import { DiagnosisState } from '../types/diagnosis';
 import { useUrlParams } from '../hooks/useUrlParams';
@@ -423,14 +424,7 @@ export default function NewHomeRedesigned() {
           />
         </div>
 
-        <footer className="bg-[#001a4d] text-white py-6 text-center text-sm mt-12">
-          <p className="mb-2">Copyright©株価AI予測2025</p>
-          <div className="space-x-4">
-            <a href="/disclaimer" className="hover:text-cyan-400 transition">Disclaimer</a>
-            <span>|</span>
-            <a href="/privacy" className="hover:text-cyan-400 transition">Privacy Policy</a>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );
