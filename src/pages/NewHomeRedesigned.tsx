@@ -255,11 +255,51 @@ export default function NewHomeRedesigned() {
 
   return (
     <>
-      <RadarScanBackground />
+      <div className="fixed inset-0 w-full h-full -z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#001a4d] via-[#001133] to-[#000a22]" />
+      </div>
 
       <div className="relative min-h-screen flex flex-col">
         <div className="relative z-10 px-4 py-8 flex-1">
-          <div className="text-center mb-8 pt-12">
+          <div className="text-center mb-8 pt-8">
+            <div className="w-full max-w-[500px] mx-auto mb-6">
+              <div className="relative w-full aspect-square">
+                <svg className="w-full h-full" viewBox="0 0 400 400">
+                  <defs>
+                    <radialGradient id="radarGlow" cx="50%" cy="50%">
+                      <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.6" />
+                      <stop offset="50%" stopColor="#00d4ff" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
+                    </radialGradient>
+                    <linearGradient id="scanGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#00d4ff" stopOpacity="0" />
+                      <stop offset="50%" stopColor="#00d4ff" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="200" cy="200" r="180" fill="url(#radarGlow)" opacity="0.3" />
+                  <g className="radar-grid">
+                    <circle cx="200" cy="200" r="180" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.3" />
+                    <circle cx="200" cy="200" r="140" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.25" />
+                    <circle cx="200" cy="200" r="100" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.2" />
+                    <circle cx="200" cy="200" r="60" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.15" />
+                    <line x1="200" y1="20" x2="200" y2="380" stroke="#00d4ff" strokeWidth="0.5" opacity="0.2" />
+                    <line x1="20" y1="200" x2="380" y2="200" stroke="#00d4ff" strokeWidth="0.5" opacity="0.2" />
+                    <line x1="73" y1="73" x2="327" y2="327" stroke="#00d4ff" strokeWidth="0.5" opacity="0.15" />
+                    <line x1="327" y1="73" x2="73" y2="327" stroke="#00d4ff" strokeWidth="0.5" opacity="0.15" />
+                  </g>
+                  <g className="radar-scan-beam animate-radar-spin" style={{ transformOrigin: '200px 200px' }}>
+                    <path d="M 200 200 L 200 20 A 180 180 0 0 1 380 200 Z" fill="url(#scanGradient)" opacity="0.3" />
+                    <line x1="200" y1="200" x2="200" y2="20" stroke="#00d4ff" strokeWidth="2" opacity="0.8" />
+                  </g>
+                  <circle cx="200" cy="200" r="8" fill="#00d4ff" opacity="0.9">
+                    <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.9;0.5;0.9" dur="2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="200" cy="200" r="4" fill="#ffffff" />
+                </svg>
+              </div>
+            </div>
             <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
               AI高精度
             </div>
@@ -296,19 +336,19 @@ export default function NewHomeRedesigned() {
               <StockInfoCardNew info={stockData.info} isPlaceholder={isPlaceholderData(stockData)} />
 
               {!isPlaceholderData(stockData) && (
-                <>
-                  <div className="max-w-md mx-auto">
-                    <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
-                  </div>
+                <div className="max-w-md mx-auto">
+                  <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
+                </div>
+              )}
 
-                  <StockPerformanceList />
+              <StockPerformanceList />
 
-                  <HexagonRadarChart />
+              <HexagonRadarChart />
 
-                  <div className="max-w-md mx-auto mt-8">
-                    <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
-                  </div>
-                </>
+              {!isPlaceholderData(stockData) && (
+                <div className="max-w-md mx-auto mt-8">
+                  <YellowDiagnosisButton onClick={runDiagnosis} text="株価AI予測" />
+                </div>
               )}
             </div>
           )}
