@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import RadarScanBackground from '../components/RadarScanBackground';
+import EnhancedRadar from '../components/EnhancedRadar';
 import StockInfoCardNew from '../components/StockInfoCardNew';
 import YellowDiagnosisButton from '../components/YellowDiagnosisButton';
 import StockPerformanceList from '../components/StockPerformanceList';
@@ -13,12 +14,22 @@ import { userTracking } from '../lib/userTracking';
 import { trackConversion, trackEvent } from '../lib/googleTracking';
 import { createPlaceholderStockData, isPlaceholderData } from '../lib/placeholderData';
 
+interface StockPerformanceItem {
+  nameJp: string;
+  code: string;
+  prediction: string;
+  todayChange: string;
+  changePercent: string;
+  isPositive: boolean;
+}
+
 export default function NewHomeRedesigned() {
   const urlParams = useUrlParams();
   const [stockCode, setStockCode] = useState('');
   const [stockData, setStockData] = useState<StockData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [performanceData, setPerformanceData] = useState<StockPerformanceItem[]>([]);
 
   const [diagnosisState, setDiagnosisState] = useState<DiagnosisState>('initial');
   const [analysisResult, setAnalysisResult] = useState<string>('');
@@ -64,12 +75,49 @@ export default function NewHomeRedesigned() {
       const data = await response.json();
       setStockData(data);
       setStockCode(code);
+
+      if (data.relatedStocks && data.relatedStocks.length > 0) {
+        fetchPerformanceData(data.relatedStocks);
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '不明なエラーが発生しました';
       setError(errorMessage);
       setStockData(createPlaceholderStockData(code));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchPerformanceData = async (relatedStocks: { code: string; name: string }[]) => {
+    try {
+      const stockCodes = relatedStocks.map(s => s.code).slice(0, 3);
+
+      const relatedResponse = await apiClient.post('/api/stock-performance/related-performance', {
+        stockCodes
+      });
+
+      let combinedData: StockPerformanceItem[] = [];
+
+      if (relatedResponse.ok) {
+        const relatedData = await relatedResponse.json();
+        if (relatedData.success && relatedData.data) {
+          combinedData = relatedData.data.slice(0, 3);
+        }
+      }
+
+      const hotResponse = await apiClient.get('/api/stock-performance/hot-stocks');
+      if (hotResponse.ok) {
+        const hotData = await hotResponse.json();
+        if (hotData.success && hotData.data) {
+          combinedData = [...combinedData, ...hotData.data].slice(0, 10);
+        }
+      }
+
+      if (combinedData.length > 0) {
+        setPerformanceData(combinedData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch performance data:', error);
     }
   };
 
@@ -262,50 +310,15 @@ export default function NewHomeRedesigned() {
       <div className="relative min-h-screen flex flex-col">
         <div className="relative px-4 py-8 flex-1">
           <div className="relative text-center mb-8 pt-8">
-            <div className="absolute inset-0 w-full max-w-[500px] mx-auto left-0 right-0 -top-8 pointer-events-none">
-              <div className="relative w-full aspect-square">
-                <svg className="w-full h-full" viewBox="0 0 400 400">
-                  <defs>
-                    <radialGradient id="radarGlow" cx="50%" cy="50%">
-                      <stop offset="0%" stopColor="#00d4ff" stopOpacity="0.6" />
-                      <stop offset="50%" stopColor="#00d4ff" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
-                    </radialGradient>
-                    <linearGradient id="scanGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#00d4ff" stopOpacity="0" />
-                      <stop offset="50%" stopColor="#00d4ff" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#00d4ff" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="200" cy="200" r="180" fill="url(#radarGlow)" opacity="0.3" />
-                  <g className="radar-grid">
-                    <circle cx="200" cy="200" r="180" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.3" />
-                    <circle cx="200" cy="200" r="140" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.25" />
-                    <circle cx="200" cy="200" r="100" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.2" />
-                    <circle cx="200" cy="200" r="60" fill="none" stroke="#00d4ff" strokeWidth="1" opacity="0.15" />
-                    <line x1="200" y1="20" x2="200" y2="380" stroke="#00d4ff" strokeWidth="0.5" opacity="0.2" />
-                    <line x1="20" y1="200" x2="380" y2="200" stroke="#00d4ff" strokeWidth="0.5" opacity="0.2" />
-                    <line x1="73" y1="73" x2="327" y2="327" stroke="#00d4ff" strokeWidth="0.5" opacity="0.15" />
-                    <line x1="327" y1="73" x2="73" y2="327" stroke="#00d4ff" strokeWidth="0.5" opacity="0.15" />
-                  </g>
-                  <g className="radar-scan-beam animate-radar-spin" style={{ transformOrigin: '200px 200px' }}>
-                    <path d="M 200 200 L 200 20 A 180 180 0 0 1 380 200 Z" fill="url(#scanGradient)" opacity="0.3" />
-                    <line x1="200" y1="200" x2="200" y2="20" stroke="#00d4ff" strokeWidth="2" opacity="0.8" />
-                  </g>
-                  <circle cx="200" cy="200" r="8" fill="#00d4ff" opacity="0.9">
-                    <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.9;0.5;0.9" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="200" cy="200" r="4" fill="#ffffff" />
-                </svg>
-              </div>
-            </div>
+            <EnhancedRadar />
 
-            <div className="relative z-10 pt-24">
-              <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
-                AI高精度
+            <div className="relative z-10 pt-24 flex flex-col items-center gap-4">
+              <div className="flex items-center justify-center gap-6">
+                <div className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-lg text-lg font-bold shadow-lg" style={{ boxShadow: '0 0 20px rgba(0,212,255,0.5)' }}>
+                  AI高精度
+                </div>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              <h1 className="text-5xl md:text-6xl font-bold text-white">
                 銘柄無料診断
               </h1>
             </div>
@@ -326,7 +339,7 @@ export default function NewHomeRedesigned() {
                 <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
               </div>
 
-              <StockPerformanceList />
+              <StockPerformanceList data={performanceData} />
 
               <HexagonRadarChart />
 

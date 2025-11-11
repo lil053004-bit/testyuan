@@ -95,4 +95,95 @@ export function getPopularStocks(daysBack = 7, limitCount = 10) {
   }
 }
 
+export function upsertStockPerformanceCache(stockData) {
+  try {
+    const id = `stock_cache_${stockData.stock_code}_${Date.now()}`;
+    const stmt = db.prepare(`
+      INSERT INTO stock_performance_cache (
+        id, stock_code, stock_name, current_price, previous_price,
+        price_change, change_percent, prediction_result, prediction_direction,
+        prediction_accuracy, is_hot_stock, last_updated
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      ON CONFLICT(stock_code) DO UPDATE SET
+        current_price = excluded.current_price,
+        previous_price = excluded.previous_price,
+        price_change = excluded.price_change,
+        change_percent = excluded.change_percent,
+        prediction_result = excluded.prediction_result,
+        prediction_direction = excluded.prediction_direction,
+        prediction_accuracy = excluded.prediction_accuracy,
+        is_hot_stock = excluded.is_hot_stock,
+        last_updated = datetime('now')
+    `);
+
+    stmt.run(
+      id,
+      stockData.stock_code,
+      stockData.stock_name,
+      stockData.current_price,
+      stockData.previous_price || stockData.current_price,
+      stockData.price_change || '0',
+      stockData.change_percent || '0%',
+      stockData.prediction_result || '',
+      stockData.prediction_direction || 'neutral',
+      stockData.prediction_accuracy || 0,
+      stockData.is_hot_stock || 0
+    );
+
+    return true;
+  } catch (error) {
+    console.error('Error upserting stock performance cache:', error);
+    return false;
+  }
+}
+
+export function getHotStocks(limit = 7) {
+  try {
+    const stmt = db.prepare(`
+      SELECT * FROM stock_performance_cache
+      WHERE is_hot_stock = 1
+      ORDER BY last_updated DESC
+      LIMIT ?
+    `);
+    return stmt.all(limit);
+  } catch (error) {
+    console.error('Error getting hot stocks:', error);
+    return [];
+  }
+}
+
+export function getStockPerformanceByCode(stockCode) {
+  try {
+    const stmt = db.prepare(`
+      SELECT * FROM stock_performance_cache
+      WHERE stock_code = ?
+      ORDER BY last_updated DESC
+      LIMIT 1
+    `);
+    return stmt.get(stockCode);
+  } catch (error) {
+    console.error('Error getting stock performance:', error);
+    return null;
+  }
+}
+
+export function clearOldStockPerformance(daysOld = 30) {
+  try {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+    const cutoff = cutoffDate.toISOString();
+
+    const stmt = db.prepare(`
+      DELETE FROM stock_performance_cache
+      WHERE last_updated < ? AND is_hot_stock = 0
+    `);
+    const result = stmt.run(cutoff);
+    console.log(`Cleaned ${result.changes} old stock performance entries`);
+    return true;
+  } catch (error) {
+    console.error('Error clearing old stock performance:', error);
+    return false;
+  }
+}
+
 export { generateUUID };

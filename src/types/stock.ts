@@ -29,7 +29,13 @@ export interface StockPrice {
   volume: string;
 }
 
+export interface RelatedStock {
+  code: string;
+  name: string;
+}
+
 export interface StockData {
   info: StockInfo;
   prices: StockPrice[];
+  relatedStocks?: RelatedStock[];
 }
