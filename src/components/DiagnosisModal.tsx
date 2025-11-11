@@ -90,8 +90,8 @@ export default function DiagnosisModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75"
       onTouchMove={(e) => e.preventDefault()}
     >
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-dark-secondary rounded-lg shadow-red-glow-lg overflow-hidden border-2 border-accent-red/30">
-        <div className="sticky top-0 bg-gradient-to-r from-accent-red to-accent-red-dark px-6 py-4 flex items-center justify-between">
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-dark-secondary rounded-lg shadow-[0_0_40px_rgba(0,212,255,0.4)] overflow-hidden border-2 border-cyan-400/30">
+        <div className="sticky top-0 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 px-6 py-4 flex items-center justify-between border-b-2 border-cyan-400/30">
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-bold text-white">AI診断結果（無料）</h2>
             {isConnecting && (
@@ -109,7 +109,7 @@ export default function DiagnosisModal({
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-red-700 rounded-full transition-colors"
+            className="p-2 hover:bg-blue-700 rounded-full transition-colors"
             aria-label="閉じる"
           >
             <X className="w-6 h-6 text-white" />
@@ -117,16 +117,16 @@ export default function DiagnosisModal({
         </div>
 
         <div ref={contentRef} className="overflow-y-auto max-h-[calc(90vh-180px)] px-6 py-6">
-          <div className="mb-6 p-4 bg-dark-card border-l-4 border-yellow-500 rounded-lg">
-            <p className="text-sm font-semibold text-yellow-400 leading-relaxed">
+          <div className="mb-6 p-4 bg-dark-card border-l-4 border-yellow-btn rounded-lg shadow-lg">
+            <p className="text-sm font-semibold text-yellow-300 leading-relaxed">
               【重要なお知らせ】本サービスは金融商品の取引を勧誘するものではなく、情報提供のみを目的としています。診断結果は投資助言ではありません。株式投資には価格変動リスク、信用リスクなどが伴い、損失を被る可能性があります。最終的な投資判断はご自身の責任において行ってください。
             </p>
           </div>
 
           <div className="mb-6">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-accent-red/30">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-cyan-400/30">
               <div className="flex items-center gap-3">
-                <div className="bg-gradient-to-r from-accent-red to-accent-red-dark text-white px-4 py-2 rounded-lg font-bold shadow-md">
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-2 rounded-lg font-bold shadow-md border border-cyan-400/30">
                   {stockCode}
                 </div>
                 <div className="text-lg font-semibold text-gray-200">{stockName}</div>
@@ -140,11 +140,11 @@ export default function DiagnosisModal({
               </div>
             </div>
 
-            <div className="bg-dark-card rounded-xl p-6 shadow-inner relative border border-gray-700">
+            <div className="bg-dark-card rounded-xl p-6 shadow-inner relative border border-cyan-400/20">
               <div className="prose prose-sm max-w-none">
                 {isConnecting ? (
                   <div className="text-center py-8">
-                    <Loader2 className="w-12 h-12 text-accent-red animate-spin mx-auto mb-4" />
+                    <Loader2 className="w-12 h-12 text-cyan-400 animate-spin mx-auto mb-4" />
                     <p className="text-gray-200 font-semibold">AIサーバーに接続中...</p>
                     <p className="text-gray-400 text-sm mt-2">数秒お待ちください</p>
                   </div>
@@ -153,7 +153,7 @@ export default function DiagnosisModal({
                     <div className="whitespace-pre-wrap text-gray-200 leading-relaxed">
                       {parsedContent.summary}
                       {isStreaming && (
-                        <span className="inline-block w-2 h-5 bg-accent-red animate-pulse ml-1"></span>
+                        <span className="inline-block w-2 h-5 bg-cyan-400 animate-pulse ml-1"></span>
                       )}
                     </div>
 
@@ -161,19 +161,19 @@ export default function DiagnosisModal({
                       <div className="border-t border-gray-600 pt-4">
                         <button
                           onClick={() => setIsDetailedAnalysisExpanded(!isDetailedAnalysisExpanded)}
-                          className="w-full flex items-center justify-between px-4 py-3 bg-dark-secondary hover:bg-gray-700 rounded-lg transition-all border border-gray-600 group"
+                          className="w-full flex items-center justify-between px-4 py-3 bg-dark-secondary hover:bg-gray-700 rounded-lg transition-all border border-cyan-400/30 group"
                         >
                           <span className="text-gray-200 font-semibold flex items-center gap-2">
-                            <span className="text-accent-red">📊</span>
+                            <span className="text-cyan-400">📊</span>
                             {isDetailedAnalysisExpanded ? 'LINEで詳細レポートをゲット' : 'LINEで詳細レポートをゲット'}
                             {isStreaming && (
                               <span className="text-xs text-gray-400">(生成中...)</span>
                             )}
                           </span>
                           {isDetailedAnalysisExpanded ? (
-                            <ChevronUp className="w-5 h-5 text-accent-red group-hover:transform group-hover:scale-110 transition-transform" />
+                            <ChevronUp className="w-5 h-5 text-cyan-400 group-hover:transform group-hover:scale-110 transition-transform" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-accent-red group-hover:transform group-hover:scale-110 transition-transform" />
+                            <ChevronDown className="w-5 h-5 text-cyan-400 group-hover:transform group-hover:scale-110 transition-transform" />
                           )}
                         </button>
 
@@ -182,11 +182,11 @@ export default function DiagnosisModal({
                             isDetailedAnalysisExpanded ? 'max-h-[2000px] opacity-100 mt-4' : 'max-h-0 opacity-0'
                           }`}
                         >
-                          <div className="bg-gradient-to-br from-dark-secondary to-dark-card p-5 rounded-lg border border-accent-red/20">
+                          <div className="bg-gradient-to-br from-dark-secondary to-dark-card p-5 rounded-lg border border-cyan-400/20">
                             <div className="whitespace-pre-wrap text-gray-300 leading-relaxed text-sm">
                               {parsedContent.detailedAnalysis}
                               {isStreaming && isDetailedAnalysisExpanded && (
-                                <span className="inline-block w-2 h-5 bg-accent-red animate-pulse ml-1"></span>
+                                <span className="inline-block w-2 h-5 bg-cyan-400 animate-pulse ml-1"></span>
                               )}
                             </div>
                           </div>
@@ -216,7 +216,7 @@ export default function DiagnosisModal({
           >
             {isDownloading ? (
               <>
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-accent-red border-t-transparent"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-cyan-400 border-t-transparent"></div>
                 <span>ダウンロード中...</span>
               </>
             ) : (

@@ -314,14 +314,20 @@ export default function NewHomeRedesigned() {
             <EnhancedRadar />
 
             <div className="relative z-10 pt-24 flex flex-col items-center gap-4">
-              <div className="flex items-center justify-center gap-6">
-                <div className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-2 rounded-lg text-lg font-bold shadow-lg" style={{ boxShadow: '0 0 20px rgba(0,212,255,0.5)' }}>
-                  AI高精度
-                </div>
-              </div>
               <h1 className="text-5xl md:text-6xl font-bold text-white">
                 銘柄無料診断
               </h1>
+              <div className="flex items-start justify-center gap-6 w-full">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                  <div className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white px-6 py-2.5 rounded-lg text-base font-bold shadow-lg border border-cyan-400/30">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-cyan-300 rounded-full animate-pulse"></div>
+                      <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">AI高精度</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
