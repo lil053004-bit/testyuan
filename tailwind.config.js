@@ -19,10 +19,6 @@ export default {
         'ai-blue-light': '#A5D8FF',
         'ai-blue': '#74C0FC',
         'yellow-warning': '#FFC107',
-        'deep-blue': '#001a4d',
-        'deep-blue-dark': '#001133',
-        'cyan-glow': '#00d4ff',
-        'yellow-btn': '#ffd900',
       },
       backgroundImage: {
         'dark-gradient': 'linear-gradient(to bottom right, #0a0e1a, #111827, #0a0e1a)',
@@ -30,7 +26,6 @@ export default {
         'orange-gradient': 'linear-gradient(to right, #FF9500, #FF6B00)',
         'ai-gradient': 'linear-gradient(135deg, #A5D8FF, #74C0FC)',
         'navy-gradient': 'linear-gradient(to bottom right, #1a1f3a, #1a2235)',
-        'deep-blue-gradient': 'linear-gradient(180deg, #001a4d 0%, #001133 50%, #000a22 100%)',
       },
       boxShadow: {
         'red-glow': '0 0 20px rgba(220, 38, 38, 0.5)',
@@ -40,7 +35,6 @@ export default {
         'blue-glow': '0 4px 16px rgba(74, 144, 226, 0.3)',
         '3d-depth': '0 10px 30px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3)',
         'inner-3d': 'inset 0 2px 4px rgba(0, 0, 0, 0.3)',
-        'cyan-glow': '0 0 30px rgba(0, 212, 255, 0.4)',
       },
       animation: {
         'pulse-red': 'pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
