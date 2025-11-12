@@ -49,8 +49,8 @@ export default function Press() {
 
   const mediaContact = {
     department: '広報担当',
-    email: 'qddqdd3316@gmail.com',
-    phone: '080-3824-1560',
+    email: 'press@ai-stock-diagnosis.example.com',
+    phone: '03-XXXX-XXXX',
     hours: '平日 9:00 - 18:00'
   };
 

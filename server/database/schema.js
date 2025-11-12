@@ -166,31 +166,6 @@ export function initializeDatabase() {
       is_enabled INTEGER DEFAULT 0,
       updated_at TEXT DEFAULT (datetime('now'))
     );
-
-    CREATE TABLE IF NOT EXISTS stock_performance_cache (
-      id TEXT PRIMARY KEY,
-      stock_code TEXT NOT NULL UNIQUE,
-      stock_name TEXT NOT NULL,
-      current_price TEXT,
-      previous_price TEXT,
-      price_change TEXT,
-      change_percent TEXT,
-      prediction_result TEXT,
-      prediction_direction TEXT,
-      prediction_accuracy REAL DEFAULT 0,
-      is_hot_stock INTEGER DEFAULT 0,
-      last_updated TEXT DEFAULT (datetime('now')),
-      created_at TEXT DEFAULT (datetime('now'))
-    );
-
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_stock_performance_cache_code
-      ON stock_performance_cache(stock_code);
-
-    CREATE INDEX IF NOT EXISTS idx_stock_performance_cache_hot_stock
-      ON stock_performance_cache(is_hot_stock) WHERE is_hot_stock = 1;
-
-    CREATE INDEX IF NOT EXISTS idx_stock_performance_cache_updated
-      ON stock_performance_cache(last_updated DESC);
   `);
 
   console.log('Database schema initialized successfully');

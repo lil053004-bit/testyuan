@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import stockRouter from './routes/stock.js';
-import stockPerformanceRouter from './routes/stock-performance.js';
 import geminiRouter from './routes/gemini.js';
 import adminRouter from './routes/admin.js';
 import trackingRouter from './routes/tracking.js';
@@ -12,7 +11,6 @@ import lineRedirectRouter from './routes/lineRedirect.js';
 import googleTrackingRouter from './routes/googleTracking.js';
 import { initializeDatabase, createInitialAdminUser } from './database/schema.js';
 import { cleanExpiredCache } from './utils/cache.js';
-import { startHotStocksScheduler } from './utils/hotStocks.js';
 
 dotenv.config();
 
@@ -23,8 +21,6 @@ setInterval(async () => {
   console.log('Running scheduled cache cleanup...');
   await cleanExpiredCache();
 }, 60 * 60 * 1000);
-
-startHotStocksScheduler();
 
 function validateApiConfiguration() {
   const apiKey = process.env.SILICONFLOW_API_KEY || process.env.SILICONFLOW_API_KEYS;
@@ -74,7 +70,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/api/stock', stockRouter);
-app.use('/api/stock-performance', stockPerformanceRouter);
 app.use('/api/gemini', geminiRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/tracking', trackingRouter);

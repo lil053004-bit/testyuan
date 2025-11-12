@@ -141,16 +141,12 @@ export default function About() {
               <div className="bg-slate-50 rounded-lg p-6">
                 <dl className="space-y-3">
                   <div className="flex flex-col sm:flex-row sm:items-start">
-                    <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">組織名</dt>
-                    <dd className="text-gray-700">合同会社リコッテ</dd>
+                    <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">サービス名</dt>
+                    <dd className="text-gray-700">AI株式診断サービス</dd>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-start">
-                    <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">組織名（英語）</dt>
-                    <dd className="text-gray-700">Ricotte LLC</dd>
-                  </div>
-                  <div className="flex flex-col sm:flex-row sm:items-start">
-                    <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">代表者</dt>
-                    <dd className="text-gray-700">田口哲夫</dd>
+                    <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">設立</dt>
+                    <dd className="text-gray-700">2025年</dd>
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-start">
                     <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">事業内容</dt>
@@ -161,7 +157,7 @@ export default function About() {
                   </div>
                   <div className="flex flex-col sm:flex-row sm:items-start">
                     <dt className="font-semibold text-gray-900 w-32 flex-shrink-0">所在地</dt>
-                    <dd className="text-gray-700">〒536-8501 大阪府大阪市城东区野江一丁目13番4号</dd>
+                    <dd className="text-gray-700">東京都（詳細は非公開）</dd>
                   </div>
                 </dl>
               </div>

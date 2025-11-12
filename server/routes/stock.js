@@ -49,27 +49,48 @@ function parseStockInfo(html) {
   }
 }
 
-function parseRelatedStocks(html) {
-  const relatedStocks = [];
+function parseStockPrices(html) {
+  const prices = [];
 
   try {
-    const sectionMatch = html.match(/<dt>比較される銘柄<\/dt>([\s\S]*?)<\/dl>/);
-    if (!sectionMatch) return relatedStocks;
+    const tableMatch = html.match(/<table class="stock_kabuka_dwm">[\s\S]*?<\/table>/);
+    if (!tableMatch) return prices;
 
-    const stockRegex = /<a href="\/stock\/\?code=(\d+)">([^<]+)<\/a>/g;
+    const rowRegex = /<tr>\s*<th scope="row"><time datetime="([^"]+)">([^<]+)<\/time><\/th>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td><span class="(up|down)?">([^<]+)<\/span><\/td>\s*<td><span class="(?:up|down)?">([^<]+)<\/span><\/td>\s*<td>([0-9,]+)<\/td>/g;
 
     let match;
-    while ((match = stockRegex.exec(sectionMatch[1])) !== null) {
-      relatedStocks.push({
-        code: match[1],
-        name: match[2],
+    while ((match = rowRegex.exec(tableMatch[0])) !== null) {
+      prices.push({
+        date: match[2],
+        open: match[3],
+        high: match[4],
+        low: match[5],
+        close: match[6],
+        change: match[8],
+        changePercent: match[9],
+        volume: match[10],
+      });
+    }
+
+    const todayMatch = html.match(/<table class="stock_kabuka0">[\s\S]*?<tr>\s*<th scope="row"><time datetime="([^"]+)">([^<]+)<\/time><\/th>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td>([0-9,.]+)<\/td>\s*<td><span class="(up|down)?">([^<]+)<\/span><\/td>\s*<td><span class="(?:up|down)?">([^<]+)<\/span><\/td>\s*<td>([0-9,]+)<\/td>/);
+
+    if (todayMatch) {
+      prices.unshift({
+        date: todayMatch[2],
+        open: todayMatch[3],
+        high: todayMatch[4],
+        low: todayMatch[5],
+        close: todayMatch[6],
+        change: todayMatch[8],
+        changePercent: todayMatch[9],
+        volume: todayMatch[10],
       });
     }
   } catch (error) {
-    console.error('Error parsing related stocks:', error);
+    console.error('Error parsing stock prices:', error);
   }
 
-  return relatedStocks;
+  return prices;
 }
 
 router.get('/data', async (req, res) => {
@@ -89,7 +110,7 @@ router.get('/data', async (req, res) => {
 
     const html = await response.text();
     const stockInfo = parseStockInfo(html);
-    const relatedStocks = parseRelatedStocks(html);
+    const stockPrices = parseStockPrices(html);
 
     if (!stockInfo) {
       return res.status(500).json({ error: 'Failed to parse stock data' });
@@ -97,8 +118,7 @@ router.get('/data', async (req, res) => {
 
     const data = {
       info: stockInfo,
-      prices: [],
-      relatedStocks: relatedStocks,
+      prices: stockPrices,
     };
 
     res.json(data);

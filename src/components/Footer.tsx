@@ -5,65 +5,37 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-20 mt-12">
+    <footer className="relative z-20 bg-gradient-to-b from-dark-secondary to-dark-card border-t-2 border-accent-red/30 mt-12">
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 py-8">
-        {/* Primary Disclaimer Section - Visible on All Devices */}
-        <div className="bg-gradient-to-br from-slate-900/80 to-blue-900/80 backdrop-blur-xl border-2 border-[#ffd900]/40 rounded-2xl p-4 sm:p-6 mb-8 shadow-2xl" style={{ boxShadow: '0 0 30px rgba(255, 217, 0, 0.15)' }}>
-          <div className="flex items-start gap-3 sm:gap-4">
-            <div className="bg-[#ffd900]/20 p-2 sm:p-3 rounded-lg flex-shrink-0 border border-[#ffd900]/30">
-              <Shield className="w-6 h-6 sm:w-7 sm:h-7 text-[#ffd900]" />
+        {/* Legal Disclosure Section - Desktop */}
+        <div className="hidden md:block bg-amber-50 border-2 border-amber-300 rounded-lg p-6 mb-8">
+          <div className="flex items-start gap-4">
+            <div className="bg-amber-100 p-3 rounded-lg flex-shrink-0">
+              <Shield className="w-6 h-6 text-amber-700" />
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg sm:text-xl font-bold text-[#ffd900] mb-3 flex items-center gap-2 flex-wrap">
-                <Scale className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-                <span>重要な免責事項</span>
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-amber-900 mb-3 flex items-center gap-2">
+                <Scale className="w-5 h-5" />
+                金融商品取引法に基づく重要事項
               </h3>
 
-              <div className="space-y-3">
-                <div className="bg-slate-900/60 backdrop-blur-sm rounded-lg p-3 sm:p-4 border-l-4 border-cyan-400/80">
-                  <p className="font-bold text-cyan-300 mb-2 text-sm sm:text-base">
-                    【当サービスについて】
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
-                    本サービスは<span className="font-bold text-[#ffd900]">無料の株式診断ツール</span>であり、
-                    <span className="font-bold text-[#ffd900] underline">投資助言・投資勧誘を一切行いません</span>。
-                    当サービス提供者は金融商品取引業者ではなく、金融商品取引法第29条の登録を受けておりません。
-                  </p>
-                </div>
-
-                <div className="bg-slate-900/60 backdrop-blur-sm rounded-lg p-3 sm:p-4 border-l-4 border-cyan-400/80">
-                  <p className="font-bold text-cyan-300 mb-2 text-sm sm:text-base">
-                    【投資判断について】
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
-                    提供される情報は参考情報です。
-                    <span className="font-bold text-[#ffd900]">最終的な投資判断は必ずご自身の責任で行ってください</span>。
-                    投資には元本割れのリスクがあります。専門的な投資相談が必要な場合は、
-                    金融商品取引業の登録を受けた証券会社等にご相談ください。
-                  </p>
-                </div>
-
-                <div className="bg-slate-900/60 backdrop-blur-sm rounded-lg p-3 sm:p-4 border-l-4 border-cyan-400/80">
-                  <p className="font-bold text-cyan-300 mb-2 text-sm sm:text-base">
-                    【情報の正確性について】
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-200 leading-relaxed">
-                    当サービスで提供される情報の正確性、完全性、有用性について保証するものではありません。
-                    AI分析結果は過去のデータに基づくものであり、将来の投資成果を保証するものではありません。
-                    当サービスの利用により生じた損害について、当社は一切の責任を負いません。
-                  </p>
-                </div>
+              <div className="bg-slate-100 rounded p-3">
+                <p className="font-bold text-slate-900 mb-1">【登録情報】</p>
+                <p className="text-xs text-slate-700">
+                  当サービス提供者は金融商品取引業者（投資助言・代理業、投資運用業等）ではありません。
+                  金融商品取引法第29条の登録を受けた事業者ではないため、個別の投資助言を行うことはできません。
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer Links Section */}
-        <div className="border-t-2 border-cyan-400/20 pt-6">
+        <div className="border-t-2 border-gray-700 pt-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
             {/* Legal Documents */}
             <div>
-              <h4 className="font-bold text-[#ffd900] mb-3 flex items-center gap-2 text-sm">
+              <h4 className="font-bold text-white mb-3 flex items-center gap-2 text-sm">
                 <FileText className="w-4 h-4" />
                 法的文書
               </h4>
@@ -71,7 +43,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/terms"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-accent-red hover:text-red-400 hover:underline flex items-center gap-1"
                   >
                     利用規約 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -79,7 +51,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/privacy"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     プライバシーポリシー <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -87,7 +59,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/disclaimer"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     免責事項 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -95,7 +67,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/risk-disclosure"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     リスク開示書面 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -103,7 +75,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/specified-commercial-transaction-act"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     特定商取引法表記 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -113,7 +85,7 @@ export default function Footer() {
 
             {/* Contact */}
             <div>
-              <h4 className="font-bold text-[#ffd900] mb-3 flex items-center gap-2 text-sm">
+              <h4 className="font-bold text-gray-100 mb-3 flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4" />
                 お問い合わせ
               </h4>
@@ -121,7 +93,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/contact"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     お問い合わせフォーム <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -129,7 +101,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/faq"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     よくある質問 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -137,12 +109,12 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/support"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     サポート <ExternalLink className="w-3 h-3" />
                   </Link>
                 </li>
-                <li className="flex items-center gap-1 text-gray-400">
+                <li className="flex items-center gap-1 text-gray-300">
                   <Phone className="w-3 h-3" />
                   <span>平日 9:00-18:00</span>
                 </li>
@@ -151,11 +123,11 @@ export default function Footer() {
 
             {/* Service Information */}
             <div>
-              <h4 className="font-bold text-[#ffd900] mb-3 flex items-center gap-2 text-sm">
+              <h4 className="font-bold text-gray-100 mb-3 flex items-center gap-2 text-sm">
                 <Info className="w-4 h-4" />
                 サービス情報
               </h4>
-              <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
+              <ul className="space-y-2 text-xs sm:text-sm text-gray-300">
                 <li>AI株式診断サービス</li>
                 <li>リアルタイム株価情報</li>
                 <li>テクニカル分析</li>
@@ -167,7 +139,7 @@ export default function Footer() {
 
             {/* Company Information */}
             <div>
-              <h4 className="font-bold text-[#ffd900] mb-3 flex items-center gap-2 text-sm">
+              <h4 className="font-bold text-gray-100 mb-3 flex items-center gap-2 text-sm">
                 <Building className="w-4 h-4" />
                 運営会社
               </h4>
@@ -175,7 +147,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/about"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     会社概要 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -183,7 +155,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/team"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     チーム紹介 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -191,7 +163,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/careers"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     採用情報 <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -199,7 +171,7 @@ export default function Footer() {
                 <li>
                   <Link
                     to="/press"
-                    className="text-gray-300 hover:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1"
                   >
                     プレスリリース <ExternalLink className="w-3 h-3" />
                   </Link>
@@ -209,7 +181,7 @@ export default function Footer() {
           </div>
 
           {/* Copyright Section */}
-          <div className="border-t border-cyan-400/20 pt-4 text-center">
+          <div className="border-t border-gray-700 pt-4 text-center">
             <p className="text-xs sm:text-sm text-gray-400 mb-2 font-medium">
               &copy; {currentYear} AI株式診断サービス. All rights reserved.
             </p>

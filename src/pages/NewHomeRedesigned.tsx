@@ -1,28 +1,16 @@
 import { useState, useEffect } from 'react';
 import RadarScanBackground from '../components/RadarScanBackground';
-import EnhancedRadar from '../components/EnhancedRadar';
 import StockInfoCardNew from '../components/StockInfoCardNew';
 import YellowDiagnosisButton from '../components/YellowDiagnosisButton';
 import StockPerformanceList from '../components/StockPerformanceList';
 import HexagonRadarChart from '../components/HexagonRadarChart';
 import NewDiagnosisModal from '../components/NewDiagnosisModal';
-import Footer from '../components/Footer';
 import { StockData } from '../types/stock';
 import { DiagnosisState } from '../types/diagnosis';
 import { useUrlParams } from '../hooks/useUrlParams';
 import { apiClient } from '../lib/apiClient';
 import { userTracking } from '../lib/userTracking';
 import { trackConversion, trackEvent } from '../lib/googleTracking';
-import { createPlaceholderStockData, isPlaceholderData } from '../lib/placeholderData';
-
-interface StockPerformanceItem {
-  nameJp: string;
-  code: string;
-  prediction: string;
-  todayChange: string;
-  changePercent: string;
-  isPositive: boolean;
-}
 
 export default function NewHomeRedesigned() {
   const urlParams = useUrlParams();
@@ -30,7 +18,6 @@ export default function NewHomeRedesigned() {
   const [stockData, setStockData] = useState<StockData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [performanceData, setPerformanceData] = useState<StockPerformanceItem[]>([]);
 
   const [diagnosisState, setDiagnosisState] = useState<DiagnosisState>('initial');
   const [analysisResult, setAnalysisResult] = useState<string>('');
@@ -76,49 +63,10 @@ export default function NewHomeRedesigned() {
       const data = await response.json();
       setStockData(data);
       setStockCode(code);
-
-      if (data.relatedStocks && data.relatedStocks.length > 0) {
-        fetchPerformanceData(data.relatedStocks);
-      }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '不明なエラーが発生しました';
-      setError(errorMessage);
-      setStockData(createPlaceholderStockData(code));
+      setError(err instanceof Error ? err.message : '不明なエラーが発生しました');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchPerformanceData = async (relatedStocks: { code: string; name: string }[]) => {
-    try {
-      const stockCodes = relatedStocks.map(s => s.code).slice(0, 3);
-
-      const relatedResponse = await apiClient.post('/api/stock-performance/related-performance', {
-        stockCodes
-      });
-
-      let combinedData: StockPerformanceItem[] = [];
-
-      if (relatedResponse.ok) {
-        const relatedData = await relatedResponse.json();
-        if (relatedData.success && relatedData.data) {
-          combinedData = relatedData.data.slice(0, 3);
-        }
-      }
-
-      const hotResponse = await apiClient.get('/api/stock-performance/hot-stocks');
-      if (hotResponse.ok) {
-        const hotData = await hotResponse.json();
-        if (hotData.success && hotData.data) {
-          combinedData = [...combinedData, ...hotData.data].slice(0, 10);
-        }
-      }
-
-      if (combinedData.length > 0) {
-        setPerformanceData(combinedData);
-      }
-    } catch (error) {
-      console.error('Failed to fetch performance data:', error);
     }
   };
 
@@ -304,32 +252,24 @@ export default function NewHomeRedesigned() {
 
   return (
     <>
-      <div className="fixed inset-0 w-full h-full -z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#001a4d] via-[#001133] to-[#000a22]" />
-      </div>
+      <RadarScanBackground />
 
       <div className="relative min-h-screen flex flex-col">
-        <div className="relative px-4 py-8 flex-1">
-          <div className="relative text-center mb-8 pt-8">
-            <EnhancedRadar />
-
-            <div className="relative z-10 pt-24 flex flex-col items-center gap-4">
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                銘柄無料診断
-              </h1>
-              <div className="flex items-start justify-center gap-6 w-full">
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white px-6 py-2.5 rounded-lg text-base font-bold shadow-lg border border-cyan-400/30">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-cyan-300 rounded-full animate-pulse"></div>
-                      <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">AI高精度</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div className="relative z-10 px-4 py-8 flex-1">
+          <div className="text-center mb-8 pt-12">
+            <div className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg mb-4 text-lg font-bold">
+              AI高精度
             </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
+              銘柄無料診断
+            </h1>
           </div>
+
+          {error && diagnosisState !== 'error' && (
+            <div className="bg-red-900/20 border border-red-600/30 rounded-xl p-4 backdrop-blur-sm mb-6 max-w-md mx-auto">
+              <p className="text-red-300 text-center font-semibold">{error}</p>
+            </div>
+          )}
 
           {loading && (
             <div className="text-center py-20">
@@ -340,13 +280,13 @@ export default function NewHomeRedesigned() {
 
           {stockData && !loading && diagnosisState === 'initial' && (
             <div className="space-y-6 max-w-6xl mx-auto">
-              <StockInfoCardNew info={stockData.info} isPlaceholder={isPlaceholderData(stockData)} />
+              <StockInfoCardNew info={stockData.info} />
 
               <div className="max-w-md mx-auto">
                 <YellowDiagnosisButton onClick={runDiagnosis} text="診断開始" />
               </div>
 
-              <StockPerformanceList data={performanceData} />
+              <StockPerformanceList />
 
               <HexagonRadarChart />
 
@@ -430,7 +370,14 @@ export default function NewHomeRedesigned() {
           />
         </div>
 
-        <Footer />
+        <footer className="bg-[#001a4d] text-white py-6 text-center text-sm mt-12">
+          <p className="mb-2">Copyright©株価AI予測2025</p>
+          <div className="space-x-4">
+            <a href="/disclaimer" className="hover:text-cyan-400 transition">Disclaimer</a>
+            <span>|</span>
+            <a href="/privacy" className="hover:text-cyan-400 transition">Privacy Policy</a>
+          </div>
+        </footer>
       </div>
     </>
   );

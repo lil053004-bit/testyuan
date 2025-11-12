@@ -22,16 +22,14 @@ export default function StockChart({ prices }: StockChartProps) {
   const [viewMode, setViewMode] = useState<'chart' | 'table'>('chart');
   const [activeChart, setActiveChart] = useState<0 | 1>(0);
 
-  const hasData = prices && prices.length > 0;
-
-  const chartData = hasData ? prices.slice(0, 10).reverse().map(price => ({
+  const chartData = prices.slice(0, 10).reverse().map(price => ({
     date: price.date,
     close: parseFloat(price.close.replace(/,/g, '')),
     open: parseFloat(price.open.replace(/,/g, '')),
     high: parseFloat(price.high.replace(/,/g, '')),
     low: parseFloat(price.low.replace(/,/g, '')),
     volume: parseInt(price.volume.replace(/,/g, ''))
-  })) : [];
+  }));
 
   const getChangeClass = (change: string) => {
     if (change.includes('+')) return 'text-green-600';
@@ -67,18 +65,11 @@ export default function StockChart({ prices }: StockChartProps) {
               <span className="text-sm sm:text-base">テーブル</span>
             </button>
           </div>
-          )}
         </div>
       </div>
 
       {viewMode === 'chart' ? (
         <div className="p-4 sm:p-6 flex-1 flex flex-col justify-center">
-          {!hasData && (
-            <div className="text-center py-20">
-              <p className="text-gray-400 text-lg">データがありません</p>
-            </div>
-          )}
-          {hasData && (
           <div className="relative -mx-4 sm:mx-0">
             <div className="overflow-hidden">
               <div
@@ -212,12 +203,6 @@ export default function StockChart({ prices }: StockChartProps) {
         </div>
       ) : (
         <div>
-          {!hasData && (
-            <div className="text-center py-20">
-              <p className="text-gray-400 text-lg">データがありません</p>
-            </div>
-          )}
-          {hasData && (
           {/* Mobile Card Layout */}
           <div className="block md:hidden p-4 space-y-3 max-h-96 overflow-y-auto">
             {prices.slice(0, 7).map((price, index) => (
@@ -315,7 +300,6 @@ export default function StockChart({ prices }: StockChartProps) {
               <p className="text-xs text-gray-400">直近7日間のデータを表示しています</p>
             </div>
           </div>
-          )}
         </div>
       )}
     </div>

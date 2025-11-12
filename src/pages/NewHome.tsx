@@ -17,7 +17,6 @@ import { useUrlParams } from '../hooks/useUrlParams';
 import { apiClient } from '../lib/apiClient';
 import { userTracking } from '../lib/userTracking';
 import { trackConversion, trackEvent } from '../lib/googleTracking';
-import { createPlaceholderStockData, isPlaceholderData } from '../lib/placeholderData';
 
 export default function NewHome() {
   const urlParams = useUrlParams();
@@ -71,16 +70,14 @@ export default function NewHome() {
       setStockData(data);
       setStockCode(code);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '不明なエラーが発生しました';
-      setError(errorMessage);
-      setStockData(createPlaceholderStockData(code));
+      setError(err instanceof Error ? err.message : '不明なエラーが発生しました');
     } finally {
       setLoading(false);
     }
   };
 
   const runDiagnosis = async () => {
-    if (diagnosisState !== 'initial' || !stockData || isPlaceholderData(stockData)) return;
+    if (diagnosisState !== 'initial' || !stockData) return;
 
     trackEvent('Bdd');
 
@@ -272,19 +269,9 @@ export default function NewHome() {
           <AiLogo3D />
 
 
-          {error && diagnosisState !== 'error' && stockData && isPlaceholderData(stockData) && (
-            <div className="bg-red-900/20 border border-red-600/30 rounded-xl p-4 backdrop-blur-sm mb-6 max-w-2xl mx-auto">
-              <p className="text-red-300 text-center font-semibold mb-3">{error}</p>
-              <button
-                onClick={() => {
-                  if (stockCode) {
-                    fetchStockData(stockCode);
-                  }
-                }}
-                className="w-full px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition-all"
-              >
-                再試行
-              </button>
+          {error && diagnosisState !== 'error' && (
+            <div className="bg-red-900/20 border border-red-600/30 rounded-xl p-4 backdrop-blur-sm mb-6">
+              <p className="text-red-300 text-center font-semibold">{error}</p>
             </div>
           )}
 
@@ -297,25 +284,21 @@ export default function NewHome() {
 
           {stockData && !loading && diagnosisState === 'initial' && (
             <div className="space-y-6">
-              <FullWidthStockInfoCard info={stockData.info} isPlaceholder={isPlaceholderData(stockData)} />
+              <FullWidthStockInfoCard info={stockData.info} />
 
-              {!isPlaceholderData(stockData) && (
-                <>
-                  <div className="max-w-2xl mx-auto">
-                    <DiagnosisButton onClick={runDiagnosis} stockName={stockData.info.name} />
-                  </div>
+              <div className="max-w-2xl mx-auto">
+                <DiagnosisButton onClick={runDiagnosis} stockName={stockData.info.name} />
+              </div>
 
-                  <RegistrationInfo />
+              <RegistrationInfo />
 
-                  <div className="max-w-2xl mx-auto mt-6">
-                    <EnhancedDiagnosisButton onClick={runDiagnosis} stockCode={stockCode} stockName={stockData.info.name} />
-                  </div>
+              <div className="max-w-2xl mx-auto mt-6">
+                <EnhancedDiagnosisButton onClick={runDiagnosis} stockCode={stockCode} stockName={stockData.info.name} />
+              </div>
 
-                  <div className="max-w-4xl mx-auto mt-6">
-                    <PriceHistoryScroller prices={stockData.prices} stockCode={stockCode} />
-                  </div>
-                </>
-              )}
+              <div className="max-w-4xl mx-auto mt-6">
+                <PriceHistoryScroller prices={stockData.prices} stockCode={stockCode} />
+              </div>
             </div>
           )}
 

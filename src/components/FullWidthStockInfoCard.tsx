@@ -4,10 +4,9 @@ import { useState } from 'react';
 
 interface FullWidthStockInfoCardProps {
   info: StockInfo;
-  isPlaceholder?: boolean;
 }
 
-export default function FullWidthStockInfoCard({ info, isPlaceholder = false }: FullWidthStockInfoCardProps) {
+export default function FullWidthStockInfoCard({ info }: FullWidthStockInfoCardProps) {
   const isPositive = !info.change.startsWith('-');
   const changeColor = isPositive ? 'text-green-400' : 'text-red-400';
   const bgGradient = isPositive
@@ -16,9 +15,7 @@ export default function FullWidthStockInfoCard({ info, isPlaceholder = false }: 
 
   return (
     <div
-      className={`w-full bg-gradient-to-br from-navy-card/90 via-navy-card/80 to-blue-900/70 backdrop-blur-xl rounded-2xl border shadow-2xl hover:shadow-blue-glow hover:-translate-y-1 transition-all duration-300 overflow-hidden animate-fade-in-up ${
-        isPlaceholder ? 'border-red-500/50' : 'border-blue-border/40'
-      }`}
+      className="w-full bg-gradient-to-br from-navy-card/90 via-navy-card/80 to-blue-900/70 backdrop-blur-xl rounded-2xl border border-blue-border/40 shadow-2xl hover:shadow-blue-glow hover:-translate-y-1 transition-all duration-300 overflow-hidden animate-fade-in-up"
     >
       <div className={`bg-gradient-to-r ${bgGradient} p-6 md:p-8 border-b border-blue-border/30`}>
         <div className="space-y-3">
@@ -33,14 +30,9 @@ export default function FullWidthStockInfoCard({ info, isPlaceholder = false }: 
 
           <div className="flex gap-2">
             <div className="flex-[75]">
-              <h2 className={`text-xl md:text-2xl font-bold ${
-                isPlaceholder ? 'text-red-400' : 'text-white'
-              }`}>
+              <h2 className="text-xl md:text-2xl font-bold text-white">
                 {info.name}
               </h2>
-              {isPlaceholder && (
-                <p className="text-xs text-red-300 mt-1">データが読み込めませんでした</p>
-              )}
             </div>
             <div className="flex-[25] flex items-center gap-1 text-xs text-blue-300/70">
               <span className="px-1.5 py-0.5 bg-blue-900/30 rounded truncate">{info.market}</span>
@@ -52,18 +44,14 @@ export default function FullWidthStockInfoCard({ info, isPlaceholder = false }: 
           <div className="flex gap-4 items-end">
             <div className="flex-1">
               <div className="text-sm text-blue-300/60 mb-1">現在値</div>
-              <div className={`text-2xl md:text-4xl font-black tracking-tight ${
-                isPlaceholder ? 'text-gray-500' : 'text-white'
-              }`}>
+              <div className="text-2xl md:text-4xl font-black text-white tracking-tight">
                 ¥{info.price}
               </div>
             </div>
             <div className="flex-1">
               <div className="text-sm text-blue-300/60 mb-1">変動</div>
-              <div className={`flex items-center gap-2 text-lg md:text-xl font-bold ${
-                isPlaceholder ? 'text-gray-500' : changeColor
-              }`}>
-                {!isPlaceholder && (isPositive ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />)}
+              <div className={`flex items-center gap-2 ${changeColor} text-lg md:text-xl font-bold`}>
+                {isPositive ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
                 <span>{info.change}</span>
                 <span className="text-base">({info.changePercent}%)</span>
               </div>
