@@ -1,7 +1,7 @@
 import db from '../database/db.js';
 import { generateUUID } from '../database/helpers.js';
 
-export function recordUsageStats({ cacheHit, apiCall, error, responseTime, queueLength = 0 }) {
+export async function recordUsageStats({ cacheHit, apiCall, error, responseTime, queueLength = 0 }) {
   try {
     const now = new Date();
     const date = now.toISOString().split('T')[0];
@@ -60,7 +60,7 @@ export function recordUsageStats({ cacheHit, apiCall, error, responseTime, queue
   }
 }
 
-export function getTodayStats() {
+export async function getTodayStats() {
   try {
     const today = new Date().toISOString().split('T')[0];
 
